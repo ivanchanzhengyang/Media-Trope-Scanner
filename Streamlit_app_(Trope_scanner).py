@@ -1,8 +1,16 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# Importing Streamlit
+# In[1]:
+
+
+#importing scripts
+
 import streamlit as st
+
+
+# In[2]:
+
 
 # Function to gracefully exit the app
 def exit_app():
@@ -19,3 +27,4 @@ st.write(f"You selected: {slider_value}")
 # Add an exit button
 if st.button("Exit"):
     exit_app()
+
