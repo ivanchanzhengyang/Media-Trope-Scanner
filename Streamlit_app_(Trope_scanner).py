@@ -7,24 +7,30 @@
 #importing scripts
 
 import streamlit as st
+from bs4 import BeautifulSoup
+import requests
 
 
 # In[2]:
 
 
-# Function to gracefully exit the app
-def exit_app():
-    st.stop()
+# Function to scrape TV Tropes for trope information
+def scrape_tvtropes(trope_name):
+    url = f"https://tvtropes.org/pmwiki/pmwiki.php/Main/{trope_name}"
+    page = requests.get(url)
+    soup = BeautifulSoup(page.content, "html.parser")
+    trope_description = soup.find("div", class_="page-content").text
+    return trope_description
 
-# Main app content
-st.title("My Streamlit App")
-st.write("Welcome to my first Streamlit app!")
+# Streamlit app
+st.title("Trope Scanner")
 
-# Add a slider
-slider_value = st.slider("Select a value", 0, 100, 50)
-st.write(f"You selected: {slider_value}")
-
-# Add an exit button
-if st.button("Exit"):
-    exit_app()
+trope_name = st.text_input("Enter a trope name:")
+if trope_name:
+    try:
+        trope_description = scrape_tvtropes(trope_name)
+        st.write("Trope Description:")
+        st.write(trope_description)
+    except:
+        st.error("Trope not found. Please enter a valid trope name.")
 
